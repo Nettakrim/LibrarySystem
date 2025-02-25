@@ -1,12 +1,11 @@
 #include <iostream>
 
-#include "Book.h"
+#include "Library.h"
 
 int main()
 {
-    std::cout << "Hello World!\n";
-    Item* book = new Book();
-    std::cout << book->getDescription();
+    Library* library = new Library();
 
     std::cin.ignore();
+    delete library;
 }

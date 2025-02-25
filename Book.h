@@ -3,7 +3,7 @@
 
 class Book : public Item {
 public:
-	Book();
+	Book(std::string filename);
 
 	~Book();
 

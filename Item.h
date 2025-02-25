@@ -3,6 +3,8 @@
 
 class Item {
 public:
+	Item(std::string filename);
+
 	enum State {
 		Available,
 		Borrowed,
@@ -14,6 +16,10 @@ public:
 
 	void setState(State state);
 
+	std::string getFilename();
+
 private:
 	Item::State state = Available;
+
+	std::string filename;
 };

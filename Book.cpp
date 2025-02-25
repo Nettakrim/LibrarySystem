@@ -1,6 +1,6 @@
 #include "Book.h"
 
-Book::Book()
+Book::Book(std::string filename) : Item(filename)
 {
 
 }
