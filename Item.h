@@ -1,5 +1,7 @@
 #pragma once
 #include<string>
+#include <fstream>
+#include <iostream>
 
 class Item {
 public:
@@ -17,6 +19,8 @@ public:
 	void setState(State state);
 
 	std::string getFilename();
+
+	virtual void saveData(std::ofstream& file) = 0;
 
 private:
 	Item::State state = Available;

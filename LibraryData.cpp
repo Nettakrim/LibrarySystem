@@ -1,8 +1,8 @@
 #include "Library.h"
 
-#include <filesystem> 
-#include <fstream> 
-#include <iostream> 
+#include <filesystem>
+#include <fstream>
+#include <iostream>
 #include <string>
 
 #include "Item.h"
@@ -20,15 +20,14 @@ void Library::load()
 
 		std::ifstream file(path);
 
-		while (std::getline(file, line)) {
-			std::cout << line;
+		if (std::getline(file, line)) {
+			std::string filename = path.filename().string();
+			if (line == "book") {
+				items.push_back(new Book(filename, file));
+			}
 		}
 
-		std::cout << std::endl;
-
 		file.close();
-
-		items.push_back(new Book(path.filename().string()));
 	}
 }
 
@@ -38,9 +37,7 @@ void Library::save()
 
 	for (Item* item : items) {
 		std::ofstream file(dir.append("/data/items/").append(item->getFilename()));
-
-		file << "test";
-
+		item->saveData(file);
 		file.close();
 	}
 }
