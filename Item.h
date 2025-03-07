@@ -7,6 +7,10 @@ class Item {
 public:
 	Item(std::string filename);
 
+	std::string getFilename();
+
+	virtual void saveData(std::ofstream& file) = 0;
+
 	enum State {
 		Available,
 		Borrowed,
@@ -18,12 +22,8 @@ public:
 
 	void setState(State state);
 
-	std::string getFilename();
-
-	virtual void saveData(std::ofstream& file) = 0;
-
 private:
-	Item::State state = Available;
-
 	std::string filename;
+
+	Item::State state = Available;
 };

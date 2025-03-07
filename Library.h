@@ -19,4 +19,6 @@ public:
 	void save();
 
 	void load();
+
+	User* tryLogin(std::string username, std::string password);
 };
