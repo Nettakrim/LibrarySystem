@@ -1,4 +1,5 @@
 #include "Member.h"
+#include "Util.h"
 
 Member::Member(std::string filename, std::ifstream& file) : User(filename)
 {
@@ -13,7 +14,11 @@ void Member::saveData(std::ofstream& file)
 	file << password << "\n";
 }
 
-void Member::openUI()
+bool Member::loopUI()
 {
-	std::cout << "member!!!";
+	std::cout << "member!!!\n";
+
+	int option = Util::getOption({ "???" }, "Log Out");
+
+	return option != 0;
 }

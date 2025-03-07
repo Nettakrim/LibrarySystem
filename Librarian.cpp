@@ -1,4 +1,5 @@
 #include "Librarian.h"
+#include "Util.h"
 
 Librarian::Librarian(std::string filename, std::ifstream& file) : User(filename)
 {
@@ -13,7 +14,11 @@ void Librarian::saveData(std::ofstream& file)
 	file << password << "\n";
 }
 
-void Librarian::openUI()
+bool Librarian::loopUI()
 {
-	std::cout << "librarian!!!";
+	std::cout << "librarian!!!\n";
+
+	int option = Util::getOption({ "???" }, "Log Out");
+
+	return option != 0;
 }

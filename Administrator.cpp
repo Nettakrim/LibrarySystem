@@ -1,4 +1,5 @@
 #include "Administrator.h"
+#include "Util.h"
 
 Administrator::Administrator(std::string filename, std::ifstream& file) : User(filename)
 {
@@ -13,7 +14,11 @@ void Administrator::saveData(std::ofstream& file)
 	file << password << "\n";
 }
 
-void Administrator::openUI()
+bool Administrator::loopUI()
 {
-	std::cout << "admin!!!";
+	std::cout << "admin!!!\n";
+	
+	int option = Util::getOption({ "???" }, "Log Out");
+
+	return option != 0;
 }

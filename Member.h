@@ -7,5 +7,5 @@ public:
 
 	void saveData(std::ofstream& file);
 
-	void openUI();
+	bool loopUI();
 };

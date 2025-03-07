@@ -10,7 +10,7 @@ std::string User::getFilename()
 	return filename;
 }
 
-bool User::loginMatches(std::string username, std::string password)
+bool User::loginMatches(std::string username, std::string password) const
 {
 	return this->username == username && this->password == password;
 }
