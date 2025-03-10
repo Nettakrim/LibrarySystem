@@ -21,4 +21,8 @@ public:
 	void load();
 
 	User* tryLogin(std::string username, std::string password);
+
+	std::list<Item*> getItems(int type);
+
+	Item* searchItem(int type);
 };

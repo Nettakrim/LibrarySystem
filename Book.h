@@ -2,14 +2,26 @@
 #include "Item.h"
 
 class Book : public Item {
+private:
+	std::string title;
+	std::string author;
+
 public:
 	Book(std::string filename);
 
-	~Book();
+	int getType() const;
 
-	std::string getDescription();
+	~Book();
 
 	Book(std::string filename, std::ifstream& file);
 
 	void saveData(std::ofstream& file);
+
+	std::string getListDisplay() const;
+
+	std::string getDescription() const;
+
+	std::vector<std::string> getInfoFields() const;
+
+	std::string getInfoValue(int field) const;
 };

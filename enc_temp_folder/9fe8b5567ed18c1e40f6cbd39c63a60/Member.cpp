@@ -26,7 +26,7 @@ bool Member::loopUI()
 	if (option == 1) {
 		Item* item = Library::INSTANCE->searchItem(0);
 		if (item != nullptr) {
-			std::cout << "\n" << item->getListDisplay() << "\n" << item->getDescription();
+			std::cout << item->getListDisplay() << "\n" << item->getDescription();
 			Util::awaitEnter();
 		}
 	}
