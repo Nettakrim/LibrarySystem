@@ -35,6 +35,8 @@ public:
 
 	virtual std::string getInfoValue(int field) const = 0;
 
+	virtual void setInfoValue(int field, std::string value) = 0;
+
 private:
 	std::string filename;
 

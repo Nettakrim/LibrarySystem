@@ -68,3 +68,17 @@ std::string Book::getInfoValue(int field) const
 		return "";
 	};
 }
+
+void Book::setInfoValue(int field, std::string value)
+{
+	switch (field) {
+	case 0:
+		title = value;
+		break;
+	case 1:
+		author = value;
+		break;
+	default:
+		break;
+	};
+}

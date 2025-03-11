@@ -22,11 +22,44 @@ void Librarian::saveData(std::ofstream& file)
 	file << password << "\n";
 }
 
+void changeInfo(Item* item) {
+	int field = Util::getOption(item->getInfoFields());
+	if (field == 0) {
+		return;
+	}
+	field--;
+
+	std::cout << "\nCurrent Value: " + item->getInfoValue(field);
+	std::cout << "\nNew Value:     ";
+
+	std::string value;
+	std::getline(std::cin, value);
+	item->setInfoValue(field, value);
+
+	std::cout << "Updated";
+	Util::awaitEnter();
+}
+
 bool Librarian::loopUI()
 {
 	std::cout << "librarian!!!\n";
 
-	int option = Util::getOption({ "???" }, "Log Out");
+	int option = Util::getOption({ "Manage Book" }, "Log Out");
+
+	if (option == 1) {
+		Item* item = Library::INSTANCE->searchItem(0);
+		if (item != nullptr) {
+			std::cout << Util::SAVE_CURSOR_POS;
+			int action;
+			do {
+				std::cout << Util::LOAD_CURSOR_POS << Util::CLEAR_ALL_AFTER << "\n" << item->getListDisplay() << "\n" << item->getDescription() << "\n";
+				action = Util::getOption({ "Change Info" });
+				if (action == 1) {
+					changeInfo(item);
+				}
+			} while (action > 0);
+		}
+	}
 
 	return option != 0;
 }

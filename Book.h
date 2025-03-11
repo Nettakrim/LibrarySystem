@@ -24,4 +24,6 @@ public:
 	std::vector<std::string> getInfoFields() const;
 
 	std::string getInfoValue(int field) const;
+
+	void setInfoValue(int field, std::string value);
 };
