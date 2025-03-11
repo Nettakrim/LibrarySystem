@@ -13,8 +13,6 @@
 #include "Librarian.h"
 #include "Administrator.h"
 
-#include "Util.h"
-
 const std::string itemDir = "/data/items/";
 const std::string userDir = "/data/users/";
 
@@ -74,7 +72,7 @@ void Library::save()
 
 	for (Item* item : items) {
 		std::string path = dir;
-		path.append(itemDir).append(Util::makeFileSafe(item->getFilename()));
+		path.append(itemDir).append(item->getFilename());
 		std::ofstream file(path);
 		item->saveData(file);
 		file.close();
@@ -82,7 +80,7 @@ void Library::save()
 
 	for (User* user : users) {
 		std::string path = dir;
-		path.append(userDir).append(Util::makeFileSafe(user->getFilename()));
+		path.append(userDir).append(user->getFilename());
 		std::ofstream file(path);
 		user->saveData(file);
 		file.close();

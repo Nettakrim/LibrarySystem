@@ -3,7 +3,7 @@
 
 class Librarian : public User {
 public:
-	Librarian(std::string filename);
+	Librarian(std::string username, std::string password);
 
 	Librarian(std::string filename, std::ifstream& file);
 

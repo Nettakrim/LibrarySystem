@@ -4,7 +4,7 @@
 #include "Item.h"
 #include "Library.h"
 
-Member::Member(std::string filename, std::string username, std::string password) : User(filename)
+Member::Member(std::string username, std::string password) : User(Util::makeFileSafe(Library::INSTANCE->getUserFilenamePrefix() + username))
 {
 	this->username = username;
 	this->password = password;

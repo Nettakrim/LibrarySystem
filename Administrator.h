@@ -3,7 +3,7 @@
 
 class Administrator : public User {
 public:
-	Administrator(std::string filename);
+	Administrator(std::string username, std::string password);
 
 	Administrator(std::string filename, std::ifstream& file);
 

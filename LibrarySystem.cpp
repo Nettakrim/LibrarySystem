@@ -28,7 +28,7 @@ static void mainLoop() {
                 continue;
             }
 
-            user = new Member(Library::INSTANCE->getUserFilenamePrefix()+username, username, password);
+            user = new Member(username, password);
             Library::INSTANCE->addUser(user);
         }
         else {

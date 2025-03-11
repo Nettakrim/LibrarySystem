@@ -1,8 +1,12 @@
 #include "Librarian.h"
-#include "Util.h"
 
-Librarian::Librarian(std::string filename) : User(filename)
+#include "Util.h"
+#include "Library.h"
+
+Librarian::Librarian(std::string username, std::string password) : User(Util::makeFileSafe(Library::INSTANCE->getUserFilenamePrefix() + username))
 {
+	this->username = username;
+	this->password = password;
 }
 
 Librarian::Librarian(std::string filename, std::ifstream& file) : User(filename)
