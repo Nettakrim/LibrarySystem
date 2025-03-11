@@ -27,7 +27,7 @@ bool Member::loopUI()
 {
 	std::cout << "member!!!\n";
 
-	int option = Util::getOption({ "Borrow" }, "Log Out");
+	int option = Util::getOption({ "Borrow", "Account Info"}, "Log Out");
 
 	if (option == 1) {
 		Item* item = Library::INSTANCE->searchItem(0);
@@ -35,6 +35,9 @@ bool Member::loopUI()
 			std::cout << "\n" << item->getListDisplay() << "\n" << item->getDescription();
 			Util::awaitEnter();
 		}
+	}
+	else if (option == 2) {
+		accountInfoUI();
 	}
 
 	return option != 0;

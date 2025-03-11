@@ -16,6 +16,8 @@ public:
 	bool passwordMatches(std::string password) const;
 
 	virtual bool loopUI() = 0;
+
+	void accountInfoUI();
 private:
 	std::string filename;
 

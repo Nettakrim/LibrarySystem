@@ -1,5 +1,7 @@
 #include "User.h"
 
+#include "Util.h"
+
 User::User(std::string filename)
 {
 	this->filename = filename;
@@ -18,4 +20,10 @@ bool User::usernameMatches(std::string username) const
 bool User::passwordMatches(std::string password) const
 {
 	return this->password == password;
+}
+
+void User::accountInfoUI()
+{
+	std::cout << "\n" << username;
+	Util::awaitEnter();
 }

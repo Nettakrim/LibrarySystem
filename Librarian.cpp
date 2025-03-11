@@ -44,7 +44,7 @@ bool Librarian::loopUI()
 {
 	std::cout << "librarian!!!\n";
 
-	int option = Util::getOption({ "Manage Book" }, "Log Out");
+	int option = Util::getOption({ "Manage Book", "Account Info"}, "Log Out");
 
 	if (option == 1) {
 		Item* item = Library::INSTANCE->searchItem(0);
@@ -59,6 +59,9 @@ bool Librarian::loopUI()
 				}
 			} while (action > 0);
 		}
+	}
+	else if (option == 2) {
+		accountInfoUI();
 	}
 
 	return option != 0;

@@ -27,7 +27,7 @@ bool Administrator::loopUI()
 {
 	std::cout << "admin!!!\n";
 	
-	int option = Util::getOption({ "Create New Account", "Delete Account" }, "Log Out");
+	int option = Util::getOption({ "Create New Account", "Delete Account", "Account Info"}, "Log Out");
 
 	if (option == 1) {
 		int type = Util::getOption({ "Librarian", "Admin" });
@@ -52,9 +52,9 @@ bool Administrator::loopUI()
 			}
 		}
 	}
-	else if (option == 2) {
+	else if (option >= 2) {
 		std::string username;
-		std::cout << "Enter Username of account to Delete: ";
+		std::cout << "Enter Username: ";
 		std::getline(std::cin, username);
 		User* user = Library::INSTANCE->getUser(username);
 		if (user == nullptr) {
@@ -62,10 +62,15 @@ bool Administrator::loopUI()
 			Util::awaitEnter();
 		}
 		else {
-			if (Util::getOption({ "Confirm" }) != 0) {
-				Library::INSTANCE->removeUser(user);
-				std::cout << "User Deleted Successfully";
-				Util::awaitEnter();
+			if (option == 2) {
+				if (Util::getOption({ "Confirm Delete" }) != 0) {
+					Library::INSTANCE->removeUser(user);
+					std::cout << "User Deleted Successfully";
+					Util::awaitEnter();
+				}
+			}
+			else if (option == 3) {
+				user->accountInfoUI();
 			}
 		}
 	}

@@ -32,7 +32,7 @@ static void mainLoop() {
             Library::INSTANCE->addUser(user);
         }
         else {
-            if (user == nullptr) {
+            if (user == nullptr || !user->passwordMatches(password)) {
                 std::cout << "Invalid Username or Password\n";
                 Util::awaitEnter();
                 continue;
