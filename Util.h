@@ -21,4 +21,6 @@ namespace Util {
 	void moveBackAndClear(int lines);
 
 	std::string toLower(std::string s);
+
+	std::string makeFileSafe(std::string filename);
 }

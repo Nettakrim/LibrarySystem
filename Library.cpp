@@ -17,10 +17,34 @@ Library::~Library()
 	save();
 }
 
-User* Library::tryLogin(std::string username, std::string password)
+void Library::addUser(User* user)
+{
+	users.push_back(user);
+	usersUUID++;
+}
+
+void Library::removeUser(User* user)
+{
+	users.remove(user);
+	// TODO: delete associated file
+}
+
+void Library::addItem(Item* item)
+{
+	items.push_back(item);
+	itemsUUID++;
+}
+
+void Library::removeItem(Item* item)
+{
+	items.remove(item);
+	// TODO: delete associated file
+}
+
+User* Library::getUser(std::string username)
 {
 	for (User* user : users) {
-		if (user->loginMatches(username, password)) {
+		if (user->usernameMatches(username)) {
 			return user;
 		}
 	}

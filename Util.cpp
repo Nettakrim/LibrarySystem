@@ -49,3 +49,13 @@ std::string Util::toLower(std::string s)
 	}
 	return s;
 }
+
+std::string Util::makeFileSafe(std::string filename) {
+	std::string dissalowed = "\\/:*?\"<>|";
+	for (int i = 0; i < filename.size(); i++) {
+		if (dissalowed.find(filename[i]) != std::string::npos) {
+			filename[i] = '_';
+		}
+	}
+	return filename;
+}

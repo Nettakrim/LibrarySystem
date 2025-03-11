@@ -2,13 +2,14 @@
 
 #include "Library.h"
 #include "Util.h"
+#include "Member.h"
 
 static void mainLoop() {
     while (true) {
         std::cout << Util::CLEAR_ALL;
-        int loop = Util::getOption({ "Login" }, "Exit");
+        int option = Util::getOption({ "Login", "Create Account"}, "Exit");
 
-        if (loop == 0) {
+        if (option == 0) {
             return;
         }
 
@@ -19,11 +20,23 @@ static void mainLoop() {
         std::cout << "Enter Password: ";
         std::getline(std::cin, password);
 
-        User* user = Library::INSTANCE->tryLogin(username, password);
-        if (user == nullptr) {
-            std::cout << "Invalid Username or Password\n";
-            Util::awaitEnter();
-            continue;
+        User* user = Library::INSTANCE->getUser(username);
+        if (option == 2) {
+            if (user != nullptr) {
+                std::cout << "User \"" << username << "\" already exists";
+                Util::awaitEnter();
+                continue;
+            }
+
+            user = new Member(Library::INSTANCE->getUserFilenamePrefix()+username, username, password);
+            Library::INSTANCE->addUser(user);
+        }
+        else {
+            if (user == nullptr) {
+                std::cout << "Invalid Username or Password\n";
+                Util::awaitEnter();
+                continue;
+            }
         }
 
         std::cout << Util::CLEAR_ALL;

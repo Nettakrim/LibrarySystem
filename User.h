@@ -11,7 +11,9 @@ public:
 
 	virtual void saveData(std::ofstream& file) = 0;
 
-	bool loginMatches(std::string username, std::string password) const;
+	bool usernameMatches(std::string username) const;
+
+	bool passwordMatches(std::string password) const;
 
 	virtual bool loopUI() = 0;
 private:

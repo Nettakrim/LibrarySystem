@@ -1,6 +1,10 @@
 #include "Librarian.h"
 #include "Util.h"
 
+Librarian::Librarian(std::string filename) : User(filename)
+{
+}
+
 Librarian::Librarian(std::string filename, std::ifstream& file) : User(filename)
 {
 	std::getline(file, username);

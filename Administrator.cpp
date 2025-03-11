@@ -1,6 +1,11 @@
 #include "Administrator.h"
 #include "Util.h"
 
+Administrator::Administrator(std::string filename) : User(filename)
+{
+
+}
+
 Administrator::Administrator(std::string filename, std::ifstream& file) : User(filename)
 {
 	std::getline(file, username);

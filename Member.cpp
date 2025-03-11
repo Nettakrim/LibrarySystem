@@ -4,6 +4,12 @@
 #include "Item.h"
 #include "Library.h"
 
+Member::Member(std::string filename, std::string username, std::string password) : User(filename)
+{
+	this->username = username;
+	this->password = password;
+}
+
 Member::Member(std::string filename, std::ifstream& file) : User(filename)
 {
 	std::getline(file, username);

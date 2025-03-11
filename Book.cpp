@@ -64,5 +64,7 @@ std::string Book::getInfoValue(int field) const
 		return title;
 	case 1:
 		return author;
-	}
+	default:
+		return "";
+	};
 }

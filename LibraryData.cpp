@@ -13,6 +13,8 @@
 #include "Librarian.h"
 #include "Administrator.h"
 
+#include "Util.h"
+
 const std::string itemDir = "/data/items/";
 const std::string userDir = "/data/users/";
 
@@ -59,6 +61,11 @@ void Library::load()
 
 		file.close();
 	}
+
+	dir.append("/data/UUID.txt");
+	std::ifstream file(dir);
+	file >> usersUUID;
+	file >> itemsUUID;
 }
 
 void Library::save()
@@ -67,7 +74,7 @@ void Library::save()
 
 	for (Item* item : items) {
 		std::string path = dir;
-		path.append(itemDir).append(item->getFilename());
+		path.append(itemDir).append(Util::makeFileSafe(item->getFilename()));
 		std::ofstream file(path);
 		item->saveData(file);
 		file.close();
@@ -75,9 +82,24 @@ void Library::save()
 
 	for (User* user : users) {
 		std::string path = dir;
-		path.append(userDir).append(user->getFilename());
+		path.append(userDir).append(Util::makeFileSafe(user->getFilename()));
 		std::ofstream file(path);
 		user->saveData(file);
 		file.close();
 	}
+
+	std::ofstream file(dir.append("/data/UUID.txt"));
+	file << usersUUID << "\n";
+	file << itemsUUID << "\n";
+	file.close();
+}
+
+std::string Library::getUserFilenamePrefix() const
+{
+	return std::to_string(usersUUID) + " ";
+}
+
+std::string Library::getItemFilenamePrefix() const
+{
+	return std::to_string(itemsUUID) + " ";
 }
