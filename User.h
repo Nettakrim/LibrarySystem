@@ -17,7 +17,7 @@ public:
 
 	virtual bool loopUI() = 0;
 
-	void accountInfoUI();
+	bool accountInfoUI(bool admin);
 private:
 	std::string filename;
 

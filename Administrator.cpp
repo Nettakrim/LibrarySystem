@@ -4,7 +4,7 @@
 #include "Library.h"
 #include "Librarian.h"
 
-Administrator::Administrator(std::string username, std::string password) : User(Util::makeFileSafe(Library::INSTANCE->getUserFilenamePrefix() + username))
+Administrator::Administrator(std::string username, std::string password) : User(Util::makeFileSafe(Library::INSTANCE->getUserFilenamePrefix() + username) + ".txt")
 {
 	this->username = username;
 	this->password = password;
@@ -27,7 +27,7 @@ bool Administrator::loopUI()
 {
 	std::cout << "admin!!!\n";
 	
-	int option = Util::getOption({ "Create New Account", "Delete Account", "Account Info"}, "Log Out");
+	int option = Util::getOption({ "Create New Account", "Manage Account"}, "Log Out");
 
 	if (option == 1) {
 		int type = Util::getOption({ "Librarian", "Admin" });
@@ -52,7 +52,7 @@ bool Administrator::loopUI()
 			}
 		}
 	}
-	else if (option >= 2) {
+	else if (option == 2) {
 		std::string username;
 		std::cout << "Enter Username: ";
 		std::getline(std::cin, username);
@@ -61,17 +61,8 @@ bool Administrator::loopUI()
 			std::cout << "No User " << user << " found";
 			Util::awaitEnter();
 		}
-		else {
-			if (option == 2) {
-				if (Util::getOption({ "Confirm Delete" }) != 0) {
-					Library::INSTANCE->removeUser(user);
-					std::cout << "User Deleted Successfully";
-					Util::awaitEnter();
-				}
-			}
-			else if (option == 3) {
-				user->accountInfoUI();
-			}
+		else if (!user->accountInfoUI(true) && username == this->username) {
+			return false;
 		}
 	}
 

@@ -23,22 +23,10 @@ void Library::addUser(User* user)
 	usersUUID++;
 }
 
-void Library::removeUser(User* user)
-{
-	users.remove(user);
-	// TODO: delete associated file
-}
-
 void Library::addItem(Item* item)
 {
 	items.push_back(item);
 	itemsUUID++;
-}
-
-void Library::removeItem(Item* item)
-{
-	items.remove(item);
-	// TODO: delete associated file
 }
 
 User* Library::getUser(std::string username)

@@ -5,6 +5,7 @@ class Book : public Item {
 private:
 	std::string title;
 	std::string author;
+	std::string description;
 
 public:
 	Book(std::string filename);

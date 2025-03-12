@@ -39,10 +39,9 @@ static void mainLoop() {
             }
         }
 
-        std::cout << Util::CLEAR_ALL;
-        while (user->loopUI()) {
+        do {
             std::cout << Util::CLEAR_ALL;
-        }
+        } while (user->loopUI());
     }
 }
 

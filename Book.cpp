@@ -19,6 +19,7 @@ Book::Book(std::string filename, std::ifstream& file) : Item(filename)
 {
 	std::getline(file, title);
 	std::getline(file, author);
+	std::getline(file, description);
 }
 
 void Book::saveData(std::ofstream& file)
@@ -26,6 +27,7 @@ void Book::saveData(std::ofstream& file)
 	file << "book\n";
 	file << title << "\n";
 	file << author << "\n";
+	file << description << "\n";
 }
 
 std::string Book::getListDisplay() const
@@ -49,12 +51,12 @@ std::string Book::getListDisplay() const
 
 std::string Book::getDescription() const
 {
-	return "hi!";
+	return description;
 }
 
 std::vector<std::string> Book::getInfoFields() const
 {
-	return { "Title", "Author" };
+	return { "Title", "Author", "Description" };
 }
 
 std::string Book::getInfoValue(int field) const
@@ -64,6 +66,8 @@ std::string Book::getInfoValue(int field) const
 		return title;
 	case 1:
 		return author;
+	case 2:
+		return description;
 	default:
 		return "";
 	};
@@ -77,6 +81,9 @@ void Book::setInfoValue(int field, std::string value)
 		break;
 	case 1:
 		author = value;
+		break;
+	case 2:
+		description = value;
 		break;
 	default:
 		break;

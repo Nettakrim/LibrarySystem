@@ -3,7 +3,7 @@
 #include "Util.h"
 #include "Library.h"
 
-Librarian::Librarian(std::string username, std::string password) : User(Util::makeFileSafe(Library::INSTANCE->getUserFilenamePrefix() + username))
+Librarian::Librarian(std::string username, std::string password) : User(Util::makeFileSafe(Library::INSTANCE->getUserFilenamePrefix() + username) + ".txt")
 {
 	this->username = username;
 	this->password = password;
@@ -61,7 +61,7 @@ bool Librarian::loopUI()
 		}
 	}
 	else if (option == 2) {
-		accountInfoUI();
+		return accountInfoUI(false);
 	}
 
 	return option != 0;

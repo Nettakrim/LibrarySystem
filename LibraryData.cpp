@@ -101,3 +101,15 @@ std::string Library::getItemFilenamePrefix() const
 {
 	return std::to_string(itemsUUID) + " ";
 }
+
+void Library::removeUser(User* user)
+{
+	users.remove(user);
+	std::remove(std::filesystem::current_path().string().append(userDir).append(user->getFilename()).c_str());
+}
+
+void Library::removeItem(Item* item)
+{
+	items.remove(item);
+	std::remove(std::filesystem::current_path().string().append(itemDir).append(item->getFilename()).c_str());
+}
