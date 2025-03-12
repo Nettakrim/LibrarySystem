@@ -25,18 +25,41 @@ bool User::passwordMatches(std::string password) const
 
 bool User::accountInfoUI(bool admin)
 {
-	std::cout << "\n" << username;
+	std::cout << Util::SAVE_CURSOR_POS;
 
-	int option = Util::getOption({ "Delete Account" });
+	int option;
+	do {
+		std::cout << Util::LOAD_CURSOR_POS << Util::CLEAR_ALL_AFTER << "\n";
+		std::cout << "Username: " << username << "\n";
 
-	if (option == 1) {
-		if (Util::getOption({ "Confirm Delete" }) != 0) {
-			Library::INSTANCE->removeUser(this);
-			std::cout << "Account Deleted Successfully";
+		option = Util::getOption({ "Update Password", "Delete Account" });
+
+		if (option == 1) {
+			if (!admin) {
+				std::string password;
+				std::cout << "Enter Current Password: ";
+				std::getline(std::cin, password);
+				if (!passwordMatches(password)) {
+					std::cout << "Invalid Password";
+					Util::awaitEnter();
+					continue;
+				}
+			}
+
+			std::cout << "Enter New Password: ";
+			std::getline(std::cin, this->password);
+			std::cout << "Updated Password";
 			Util::awaitEnter();
-			return false;
 		}
-	}
+		else if (option == 2) {
+			if (Util::getOption({ "Confirm Delete" }) != 0) {
+				Library::INSTANCE->removeUser(this);
+				std::cout << "Account Deleted Successfully";
+				Util::awaitEnter();
+				return false;
+			}
+		}
 
+	} while (option > 0);
 	return true;
 }

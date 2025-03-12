@@ -61,8 +61,11 @@ bool Administrator::loopUI()
 			std::cout << "No User " << user << " found";
 			Util::awaitEnter();
 		}
-		else if (!user->accountInfoUI(true) && username == this->username) {
-			return false;
+		else {
+			bool isThis = username == this->username;
+			if (!user->accountInfoUI(!isThis) && isThis) {
+				return false;
+			}
 		}
 	}
 
