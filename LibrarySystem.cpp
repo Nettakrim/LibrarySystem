@@ -39,6 +39,8 @@ static void mainLoop() {
             }
         }
 
+        Library::INSTANCE->updateBorrowing();
+
         do {
             std::cout << Util::CLEAR_ALL;
         } while (user->loopUI());

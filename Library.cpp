@@ -114,3 +114,17 @@ Item* Library::searchItem(int type)
 		return matches[item];
 	}
 }
+
+void Library::updateBorrowing()
+{
+	for (User* user : users) {
+		if (user->getType() == 0) {
+			((Member*)user)->resetBorrowedCache();
+		}
+	}
+
+	time_t time = Util::getUnixTime();
+	for (Item* item : items) {
+		item->updateBorrowing(time);
+	}
+}

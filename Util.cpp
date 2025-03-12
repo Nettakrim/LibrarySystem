@@ -1,6 +1,7 @@
 #include "Util.h"
 
 #include <iostream>
+#include <ctime>
 
 void Util::awaitEnter()
 {
@@ -58,4 +59,11 @@ std::string Util::makeFileSafe(std::string filename) {
 		}
 	}
 	return filename;
+}
+
+time_t Util::getUnixTime()
+{
+	time_t t;
+	time(&t);
+	return t;
 }

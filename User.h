@@ -9,6 +9,8 @@ public:
 
 	std::string getFilename();
 
+	virtual int getType() const = 0;
+
 	virtual void saveData(std::ofstream& file) = 0;
 
 	bool usernameMatches(std::string username) const;

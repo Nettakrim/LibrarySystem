@@ -1,5 +1,8 @@
 #include "Book.h"
 
+#include "Util.h"
+#include "Library.h"
+
 Book::Book(std::string filename) : Item(filename)
 {
 
@@ -17,6 +20,17 @@ Book::~Book()
 
 Book::Book(std::string filename, std::ifstream& file) : Item(filename)
 {
+	file >> dueAt;
+	std::getline(file, borrowedBy);
+	std::getline(file, reservedBy);
+
+	if (reservedBy != "") {
+		state == State::Reserved;
+	}
+	else if (borrowedBy != "") {
+		state == State::Borrowed;
+	}
+
 	std::getline(file, title);
 	std::getline(file, author);
 	std::getline(file, description);
@@ -25,6 +39,10 @@ Book::Book(std::string filename, std::ifstream& file) : Item(filename)
 void Book::saveData(std::ofstream& file)
 {
 	file << "book\n";
+	file << dueAt << "\n";
+	file << borrowedBy << "\n";
+	file << reservedBy << "\n";
+
 	file << title << "\n";
 	file << author << "\n";
 	file << description << "\n";

@@ -16,6 +16,11 @@ Member::Member(std::string filename, std::ifstream& file) : User(filename)
 	std::getline(file, password);
 }
 
+int Member::getType() const
+{
+	return 0;
+}
+
 void Member::saveData(std::ofstream& file)
 {
 	file << "member\n";
@@ -23,20 +28,84 @@ void Member::saveData(std::ofstream& file)
 	file << password << "\n";
 }
 
+void Member::resetBorrowedCache()
+{
+	borrowed.clear();
+	reserved.clear();
+}
+
+void Member::addBorrowedCache(Item* item)
+{
+	borrowed.push_back(item);
+}
+
+void Member::addReservedCache(Item* item)
+{
+	reserved.push_back(item);
+}
+
 bool Member::loopUI()
 {
-	std::cout << "member!!!\n";
-
-	int option = Util::getOption({ "Borrow", "Account Info"}, "Log Out");
+	int option = Util::getOption({ "View Books", "Current Books", "Account Info"}, "Log Out");
 
 	if (option == 1) {
 		Item* item = Library::INSTANCE->searchItem(0);
 		if (item != nullptr) {
 			std::cout << "\n" << item->getListDisplay() << "\n" << item->getDescription();
-			Util::awaitEnter();
+
+			Item::State state = item->getState();
+			if (state == Item::State::Available) {
+				int choice = Util::getOption({ "Borrow" });
+				if (choice == 1) {
+					item->borrow(username);
+				}
+			}
+			else if (state == Item::State::Borrowed) {
+				int choice = Util::getOption({ "Reserve" });
+				if (choice == 1) {
+					item->reserve(username);
+				}
+			}
+			else {
+				std::cout << "Book Unavailable";
+				Util::awaitEnter();
+			}
 		}
 	}
 	else if (option == 2) {
+		std::vector<std::string> itemNames(borrowed.size()+reserved.size());
+		if (itemNames.size() == 0) {
+			std::cout << "No Books borrowed or Reserved";
+			Util::awaitEnter();
+		}
+		else {
+			std::vector<Item*> items(itemNames.size());
+			int i = 0;
+			for (Item* borrowedItem : borrowed) {
+				items[i] = borrowedItem;
+				itemNames[i] = borrowedItem->getListDisplay();
+				i++;
+			}
+			for (Item* reservedItem : reserved) {
+				items[i] = reservedItem;
+				itemNames[i] = reservedItem->getListDisplay();
+				i++;
+			}
+
+			int itemIndex = Util::getOption(itemNames);
+			if (itemIndex > 0) {
+				Item* item = items[itemIndex-1];
+
+				if (itemIndex <= borrowed.size()) {
+					//TODO returning books
+				}
+				else {
+					//TODO cancelling / claiming reservations
+				}
+			}
+		}
+	}
+	else if (option == 3) {
 		return accountInfoUI(false);
 	}
 

@@ -7,6 +7,8 @@ public:
 
 	Librarian(std::string filename, std::ifstream& file);
 
+	int getType() const;
+
 	void saveData(std::ofstream& file);
 
 	bool loopUI();

@@ -4,6 +4,8 @@
 #include <iostream>
 #include <vector>
 
+#include "Member.h"
+
 class Item {
 public:
 	Item(std::string filename);
@@ -23,9 +25,15 @@ public:
 
 	static std::string getStateName(State state);
 
-	void setState(State state);
-
 	State getState() const;
+
+	void borrow(std::string member);
+
+	void reserve(std::string member);
+
+	void setAvailable(bool available);
+
+	void updateBorrowing(time_t currentTime);
 
 	virtual std::string getListDisplay() const = 0;
 
@@ -40,5 +48,11 @@ public:
 private:
 	std::string filename;
 
+protected:
 	Item::State state = Available;
+
+	time_t dueAt = 0;
+
+	std::string borrowedBy = "";
+	std::string reservedBy = "";
 };

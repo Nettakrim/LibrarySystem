@@ -15,6 +15,11 @@ Librarian::Librarian(std::string filename, std::ifstream& file) : User(filename)
 	std::getline(file, password);
 }
 
+int Librarian::getType() const
+{
+	return 1;
+}
+
 void Librarian::saveData(std::ofstream& file)
 {
 	file << "librarian\n";
@@ -42,8 +47,6 @@ void changeInfo(Item* item) {
 
 bool Librarian::loopUI()
 {
-	std::cout << "librarian!!!\n";
-
 	int option = Util::getOption({ "Manage Book", "Account Info"}, "Log Out");
 
 	if (option == 1) {

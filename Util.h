@@ -27,4 +27,6 @@ namespace Util {
 	std::string toLower(std::string s);
 
 	std::string makeFileSafe(std::string filename);
+
+	time_t getUnixTime();
 }

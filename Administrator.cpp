@@ -16,6 +16,11 @@ Administrator::Administrator(std::string filename, std::ifstream& file) : User(f
 	std::getline(file, password);
 }
 
+int Administrator::getType() const
+{
+	return 2;
+}
+
 void Administrator::saveData(std::ofstream& file)
 {
 	file << "administrator\n";
@@ -25,8 +30,6 @@ void Administrator::saveData(std::ofstream& file)
 
 bool Administrator::loopUI()
 {
-	std::cout << "admin!!!\n";
-	
 	int option = Util::getOption({ "Create New Account", "Manage Account"}, "Log Out");
 
 	if (option == 1) {

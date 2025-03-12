@@ -1,5 +1,11 @@
-#include<string>
 #include "Item.h"
+
+#include <string>
+
+#include "User.h"
+#include "Member.h"
+#include "Util.h"
+#include "Library.h"
 
 Item::Item(std::string filename)
 {
@@ -18,16 +24,87 @@ std::string Item::getStateName(State state)
 	case Item::Unavailable:
 		return "Unavailable";
 	};
-}
-
-void Item::setState(State state)
-{
-	this->state = state;
+	return "???";
 }
 
 Item::State Item::getState() const
 {
 	return this->state;
+}
+
+void Item::borrow(std::string member)
+{
+	borrowedBy = member;
+	dueAt = Util::getUnixTime() + (5 * 24 * 60 * 60);
+}
+
+void Item::reserve(std::string member)
+{
+	reservedBy = member;
+}
+
+void Item::setAvailable(bool available)
+{
+	state = available ? State::Available : State::Unavailable;
+}
+
+Member* tryGetMember(std::string name) {
+	if (name != "") {
+		User* user = Library::INSTANCE->getUser(name);
+		if (user->getType() == 0) {
+			return (Member*)user;
+		}
+	}
+	return nullptr;
+}
+
+void Item::updateBorrowing(time_t currentTime) {
+	Member* borrower = tryGetMember(borrowedBy);
+	Member* reserver = tryGetMember(reservedBy);
+
+	if (borrower == nullptr) {
+		borrowedBy = "";
+	}
+	if (reserver == nullptr) {
+		reservedBy = "";
+		if (borrower == nullptr) {
+			if (state != State::Unavailable) {
+				state = State::Available;
+			}
+			return;
+		}
+	}
+
+	if (borrowedBy == "" && state == State::Borrowed) {
+		state = State::Available;
+	}
+	if (reservedBy == "" && state == State::Reserved) {
+		state = borrowedBy == "" ? State::Available : State::Borrowed;
+	}
+
+	
+	if (dueAt <= currentTime) {
+		if (borrowedBy != "") {
+			borrowedBy = "";
+			if (state == State::Borrowed) {
+				state == State::Available;
+			}
+			else if (state == State::Reserved) {
+				dueAt = 3 * 24 * 60 * 60;
+			}
+		}
+		else if (reservedBy != "") {
+			state = State::Available;
+			reservedBy = "";
+		}
+	}
+
+	if (borrowedBy != "") {
+		borrower->addBorrowedCache(this);
+	}
+	if (reservedBy != "") {
+		reserver->addReservedCache(this);
+	}
 }
 
 std::string Item::getFilename() const

@@ -40,4 +40,6 @@ public:
 	std::list<Item*> getItems(int type);
 
 	Item* searchItem(int type);
+
+	void updateBorrowing();
 };
