@@ -161,20 +161,28 @@ bool Member::loopUI()
 		else {
 			std::vector<Item*> items(itemNames.size());
 			int i = 0;
+			time_t currentTime = Util::getUnixTime();
+
 			for (Item* borrowedItem : borrowed) {
 				items[i] = borrowedItem;
 				itemNames[i] = borrowedItem->getListDisplay();
-				for (Item* overdueItem : overdue) {
-					if (borrowedItem == overdueItem) {
-						itemNames[i] += "  ! \33[4mOVERDUE\33[24m !";
-						break;
-					}
+
+				int due = borrowedItem->getDueAt()-currentTime;
+				if (due <= 0) {
+					itemNames[i] += "  ! \33[4mOVERDUE\33[24m !";
 				}
+				else {
+					itemNames[i] += " - Due in " + Util::getTimeText(due);
+				}
+
 				i++;
 			}
 			for (Item* reservedItem : reserved) {
 				items[i] = reservedItem;
-				itemNames[i] = reservedItem->getListDisplay();
+
+				int due = reservedItem->getDueAt() - currentTime;
+				itemNames[i] = reservedItem->getListDisplay() + " - Reserved for " + Util::getTimeText(due);
+
 				i++;
 			}
 

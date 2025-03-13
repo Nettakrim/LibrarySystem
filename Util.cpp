@@ -88,3 +88,21 @@ time_t Util::getUnixTime()
 	time(&t);
 	return t;
 }
+
+std::string Util::getTimeText(int seconds)
+{
+	if (seconds <= 100) {
+		return std::to_string(seconds) + " Seconds";
+	}
+	seconds /= 60;
+	if (seconds <= 90) {
+		return std::to_string(seconds) + " Minutes";
+	}
+	seconds /= 60;
+	if (seconds <= 24) {
+		return std::to_string(seconds) + " Hours";
+	}
+	seconds += 12;
+	seconds /= 24;
+	return std::to_string(seconds) + " Days";
+}

@@ -33,4 +33,6 @@ namespace Util {
 	std::string makeFileSafe(std::string filename);
 
 	time_t getUnixTime();
+
+	std::string getTimeText(int seconds);
 }
