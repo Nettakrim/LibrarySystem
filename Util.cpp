@@ -66,12 +66,19 @@ std::string Util::toLower(std::string s)
 }
 
 std::string Util::makeFileSafe(std::string filename) {
+	if (filename.size() > 32) {
+		filename = filename.substr(0, 32);
+	}
+
 	std::string dissalowed = "\\/:*?\"<>|";
 	for (int i = 0; i < filename.size(); i++) {
 		if (dissalowed.find(filename[i]) != std::string::npos) {
 			filename[i] = '_';
 		}
 	}
+
+	filename = toLower(filename);
+
 	return filename;
 }
 
