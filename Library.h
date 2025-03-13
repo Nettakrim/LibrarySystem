@@ -1,6 +1,7 @@
 #pragma once
 
 #include <list>
+
 #include "Item.h"
 #include "User.h"
 
@@ -14,6 +15,8 @@ private:
 
 public:
 	static Library* INSTANCE;
+
+	std::list<std::string*> unapprovedActions;
 
 	Library();
 
@@ -42,4 +45,8 @@ public:
 	Item* searchItem(int type);
 
 	void updateBorrowing();
+
+	User* getUserByFilename(std::string filename) const;
+
+	Item* getItemByFilename(std::string filename) const;
 };

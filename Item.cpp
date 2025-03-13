@@ -51,6 +51,9 @@ void Item::returnItem(std::string member)
 {
 	if (borrowedBy == member) {
 		borrowedBy = "";
+		if (state == State::Reserved) {
+			dueAt = Util::getUnixTime() + 3 * 24 * 60 * 60;
+		}
 	}
 	else if (reservedBy == member) {
 		reservedBy = "";
@@ -110,25 +113,22 @@ void Item::updateBorrowing(time_t currentTime) {
 	
 	if (dueAt < currentTime) {
 		if (borrowedBy != "") {
-			borrowedBy = "";
-			if (state == State::Borrowed) {
-				state = State::Available;
+			if (currentTime > 0) {
+				borrower->addOverdueCache(this);
 			}
-			else if (state == State::Reserved) {
-				dueAt = 3 * 24 * 60 * 60;
-			}
-		}
-		else if (reservedBy != "") {
+		} else if (reservedBy != "") {
 			state = State::Available;
 			reservedBy = "";
 		}
 	}
 
-	if (borrowedBy != "") {
-		borrower->addBorrowedCache(this);
-	}
-	if (reservedBy != "") {
-		reserver->addReservedCache(this);
+	if (currentTime > 0) {
+		if (borrowedBy != "") {
+			borrower->addBorrowedCache(this);
+		}
+		if (reservedBy != "") {
+			reserver->addReservedCache(this);
+		}
 	}
 }
 

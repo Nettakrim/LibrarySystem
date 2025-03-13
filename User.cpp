@@ -62,3 +62,8 @@ bool User::accountInfoUI(bool admin)
 	} while (option > 0);
 	return true;
 }
+
+std::string User::getUsername()
+{
+	return username;
+}

@@ -8,6 +8,7 @@ class Member : public User {
 private:
 	std::list<Item*> borrowed;
 	std::list<Item*> reserved;
+	std::list<Item*> overdue;
 
 public:
 	Member(std::string username, std::string password);
@@ -23,6 +24,8 @@ public:
 	void addBorrowedCache(Item* item);
 
 	void addReservedCache(Item* item);
+
+	void addOverdueCache(Item* item);
 
 	bool loopUI();
 };

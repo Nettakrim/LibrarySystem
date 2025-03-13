@@ -32,6 +32,7 @@ void Member::resetBorrowedCache()
 {
 	borrowed.clear();
 	reserved.clear();
+
 }
 
 void Member::addBorrowedCache(Item* item)
@@ -42,6 +43,11 @@ void Member::addBorrowedCache(Item* item)
 void Member::addReservedCache(Item* item)
 {
 	reserved.push_back(item);
+}
+
+void Member::addOverdueCache(Item* item)
+{
+	overdue.push_back(item);
 }
 
 void returnPrompt(Item* item, std::string username, bool isBorrowed) {
@@ -79,9 +85,28 @@ void returnPrompt(Item* item, std::string username, bool isBorrowed) {
 	}
 }
 
+void addUnapprovedAction(User* user, std::string action, Item* item)
+{
+	std::string* s = new std::string[3];
+	s[0] = user->getFilename();
+	s[1] = action;
+	s[2] = item->getFilename();
+	Library::INSTANCE->unapprovedActions.push_back(s);
+}
+
 bool Member::loopUI()
 {
-	int option = Util::getOption({ "View Books", "Current Books", "Account Info"}, "Log Out");
+	if (overdue.size() > 0) {
+		std::cout << "You have overdue books! Go to Current Books to return them.\n";
+	}
+	for (Item* reservedItem : reserved) {
+		if (reservedItem->getBorrower() == "") {
+			std::cout << "You have reservations that can be collected!\n";
+			break;
+		}
+	}
+
+	int option = Util::getOption({ "View Books", "Current Books", "Account Info" }, "Log Out");
 
 	if (option == 1) {
 		Item* item = Library::INSTANCE->searchItem(0);
@@ -99,6 +124,7 @@ bool Member::loopUI()
 					if (choice == 1) {
 						item->borrow(username);
 						borrowed.push_back(item);
+						addUnapprovedAction(this, "borrow", item);
 						std::cout << "Book Borrowed";
 						Util::awaitEnter();
 					}
@@ -108,6 +134,7 @@ bool Member::loopUI()
 					if (choice == 1) {
 						item->reserve(username);
 						reserved.push_back(item);
+						addUnapprovedAction(this, "reserve", item);
 						std::cout << "Book Reserved";
 						Util::awaitEnter();
 					}
@@ -131,6 +158,12 @@ bool Member::loopUI()
 			for (Item* borrowedItem : borrowed) {
 				items[i] = borrowedItem;
 				itemNames[i] = borrowedItem->getListDisplay();
+				for (Item* overdueItem : overdue) {
+					if (borrowedItem == overdueItem) {
+						itemNames[i] += "  ! \33[4mOVERDUE\33[24m !";
+						break;
+					}
+				}
 				i++;
 			}
 			for (Item* reservedItem : reserved) {

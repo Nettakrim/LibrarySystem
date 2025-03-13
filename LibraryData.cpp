@@ -60,10 +60,34 @@ void Library::load()
 		file.close();
 	}
 
-	dir.append("/data/UUID.txt");
-	std::ifstream file(dir);
-	file >> usersUUID;
-	file >> itemsUUID;
+	folder = dir;
+	std::ifstream file1(folder.append("/data/UUID.txt"));
+	file1 >> usersUUID;
+	file1 >> itemsUUID;
+	file1.close();
+
+	folder = dir;
+	std::ifstream file2(folder.append("/data/UnapprovedActions.txt"));
+
+	std::string user;
+	std::string action;
+	std::string item;
+	int i;
+	while (std::getline(file2, line)) {
+		i = line.find('/');
+		user = line.substr(0, i);
+		action = line.substr(i + 1);
+		i = action.find('/');
+		item = action.substr(i + 1);
+		action = action.substr(0, i);
+
+		std::string* s = new std::string[3];
+		s[0] = user;
+		s[1] = action;
+		s[2] = item;
+		unapprovedActions.push_back(s);
+	}
+	file2.close();
 }
 
 void Library::save()
@@ -86,10 +110,18 @@ void Library::save()
 		file.close();
 	}
 
-	std::ofstream file(dir.append("/data/UUID.txt"));
-	file << usersUUID << "\n";
-	file << itemsUUID << "\n";
-	file.close();
+	std::string path = dir;
+	std::ofstream file1(path.append("/data/UUID.txt"));
+	file1 << usersUUID << "\n";
+	file1 << itemsUUID << "\n";
+	file1.close();
+
+	path = dir;
+	std::ofstream file2(path.append("/data/UnapprovedActions.txt"));
+	for (std::string* action : unapprovedActions) {
+		file2 << action[0] << "/" << action[1] << "/" << action[2] << "\n";
+	}
+	file2.close();
 }
 
 std::string Library::getUserFilenamePrefix() const

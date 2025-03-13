@@ -129,3 +129,23 @@ void Library::updateBorrowing()
 		item->updateBorrowing(time);
 	}
 }
+
+User* Library::getUserByFilename(std::string filename) const
+{
+	for (User* user : users) {
+		if (user->getFilename() == filename) {
+			return user;
+		}
+	}
+	return nullptr;
+}
+
+Item* Library::getItemByFilename(std::string filename) const
+{
+	for (Item* item : items) {
+		if (item->getFilename() == filename) {
+			return item;
+		}
+	}
+	return nullptr;
+}
