@@ -97,10 +97,21 @@ bool Member::loopUI()
 				Item* item = items[itemIndex-1];
 
 				if (itemIndex <= borrowed.size()) {
-					//TODO returning books
+					if (Util::getOption({ "Return" }) == 1) {
+						item->returnItem(username);
+					}
 				}
-				else {
-					//TODO cancelling / claiming reservations
+				else if (item->getBorrower() == "") {
+					int action = Util::getOption({ "Collect Reservation", "Cancel Reservation" });
+					if (action == 1) {
+						item->borrow(username);
+					}
+					else if (action == 2) {
+						item->returnItem(username);
+					}
+				}
+				else if (Util::getOption({ "Cancel Reservation" }) == 1) {
+					item->returnItem(username);
 				}
 			}
 		}

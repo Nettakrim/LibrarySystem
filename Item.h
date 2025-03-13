@@ -4,8 +4,6 @@
 #include <iostream>
 #include <vector>
 
-#include "Member.h"
-
 class Item {
 public:
 	Item(std::string filename);
@@ -30,6 +28,12 @@ public:
 	void borrow(std::string member);
 
 	void reserve(std::string member);
+
+	void returnItem(std::string member);
+
+	std::string getBorrower() const;
+
+	std::string getReserver() const;
 
 	void setAvailable(bool available);
 

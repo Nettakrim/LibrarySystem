@@ -25,10 +25,10 @@ Book::Book(std::string filename, std::ifstream& file) : Item(filename)
 	std::getline(file, reservedBy);
 
 	if (reservedBy != "") {
-		state == State::Reserved;
+		state = State::Reserved;
 	}
 	else if (borrowedBy != "") {
-		state == State::Borrowed;
+		state = State::Borrowed;
 	}
 
 	std::getline(file, title);

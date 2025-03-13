@@ -36,11 +36,36 @@ void Item::borrow(std::string member)
 {
 	borrowedBy = member;
 	dueAt = Util::getUnixTime() + (5 * 24 * 60 * 60);
+
+	reservedBy = "";
+	state = State::Borrowed;
 }
 
 void Item::reserve(std::string member)
 {
 	reservedBy = member;
+	state = State::Reserved;
+}
+
+void Item::returnItem(std::string member)
+{
+	if (borrowedBy == member) {
+		borrowedBy = "";
+	}
+	else if (reservedBy == member) {
+		reservedBy = "";
+	}
+	updateBorrowing(0);
+}
+
+std::string Item::getBorrower() const
+{
+	return borrowedBy;
+}
+
+std::string Item::getReserver() const
+{
+	return reservedBy;
 }
 
 void Item::setAvailable(bool available)
@@ -48,7 +73,7 @@ void Item::setAvailable(bool available)
 	state = available ? State::Available : State::Unavailable;
 }
 
-Member* tryGetMember(std::string name) {
+static Member* tryGetMember(std::string name) {
 	if (name != "") {
 		User* user = Library::INSTANCE->getUser(name);
 		if (user->getType() == 0) {
@@ -83,11 +108,11 @@ void Item::updateBorrowing(time_t currentTime) {
 	}
 
 	
-	if (dueAt <= currentTime) {
+	if (dueAt < currentTime) {
 		if (borrowedBy != "") {
 			borrowedBy = "";
 			if (state == State::Borrowed) {
-				state == State::Available;
+				state = State::Available;
 			}
 			else if (state == State::Reserved) {
 				dueAt = 3 * 24 * 60 * 60;

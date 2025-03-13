@@ -1,6 +1,7 @@
 #include "Library.h"
 
 #include "Util.h"
+#include "Member.h"
 
 #include <vector>
 
