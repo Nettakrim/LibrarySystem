@@ -44,6 +44,41 @@ void Member::addReservedCache(Item* item)
 	reserved.push_back(item);
 }
 
+void returnPrompt(Item* item, std::string username, bool isBorrowed) {
+	bool changed = false;
+
+	if (isBorrowed) {
+		if (Util::getOption({ "Return" }) == 1) {
+			item->returnItem(username);
+			std::cout << "Book Returned";
+			changed = true;
+		}
+	}
+	else if (item->getBorrower() == "") {
+		int action = Util::getOption({ "Collect Reservation", "Cancel Reservation" });
+		if (action == 1) {
+			item->borrow(username);
+			std::cout << "Book Borrowed";
+			changed = true;
+		}
+		else if (action == 2) {
+			item->returnItem(username);
+			std::cout << "Reservation Cancelled";
+			changed = true;
+		}
+	}
+	else if (Util::getOption({ "Cancel Reservation" }) == 1) {
+		item->returnItem(username);
+		std::cout << "Reservation Cancelled";
+		changed = true;
+	}
+
+	if (changed) {
+		Library::INSTANCE->updateBorrowing();
+		Util::awaitEnter();
+	}
+}
+
 bool Member::loopUI()
 {
 	int option = Util::getOption({ "View Books", "Current Books", "Account Info"}, "Log Out");
@@ -51,24 +86,36 @@ bool Member::loopUI()
 	if (option == 1) {
 		Item* item = Library::INSTANCE->searchItem(0);
 		if (item != nullptr) {
-			std::cout << "\n" << item->getListDisplay() << "\n" << item->getDescription();
+			std::cout << "\n" << item->getListDisplay() << "\n" << item->getDescription() << "\n";
 
-			Item::State state = item->getState();
-			if (state == Item::State::Available) {
-				int choice = Util::getOption({ "Borrow" });
-				if (choice == 1) {
-					item->borrow(username);
-				}
-			}
-			else if (state == Item::State::Borrowed) {
-				int choice = Util::getOption({ "Reserve" });
-				if (choice == 1) {
-					item->reserve(username);
-				}
+			bool isBorrower = item->getBorrower() == username;
+			if (isBorrower || item->getReserver() == username) {
+				returnPrompt(item, username, isBorrower);
 			}
 			else {
-				std::cout << "Book Unavailable";
-				Util::awaitEnter();
+				Item::State state = item->getState();
+				if (state == Item::State::Available) {
+					int choice = Util::getOption({ "Borrow" });
+					if (choice == 1) {
+						item->borrow(username);
+						borrowed.push_back(item);
+						std::cout << "Book Borrowed";
+						Util::awaitEnter();
+					}
+				}
+				else if (state == Item::State::Borrowed) {
+					int choice = Util::getOption({ "Reserve" });
+					if (choice == 1) {
+						item->reserve(username);
+						reserved.push_back(item);
+						std::cout << "Book Reserved";
+						Util::awaitEnter();
+					}
+				}
+				else {
+					std::cout << "Book Unavailable";
+					Util::awaitEnter();
+				}
 			}
 		}
 	}
@@ -94,25 +141,7 @@ bool Member::loopUI()
 
 			int itemIndex = Util::getOption(itemNames);
 			if (itemIndex > 0) {
-				Item* item = items[itemIndex-1];
-
-				if (itemIndex <= borrowed.size()) {
-					if (Util::getOption({ "Return" }) == 1) {
-						item->returnItem(username);
-					}
-				}
-				else if (item->getBorrower() == "") {
-					int action = Util::getOption({ "Collect Reservation", "Cancel Reservation" });
-					if (action == 1) {
-						item->borrow(username);
-					}
-					else if (action == 2) {
-						item->returnItem(username);
-					}
-				}
-				else if (Util::getOption({ "Cancel Reservation" }) == 1) {
-					item->returnItem(username);
-				}
+				returnPrompt(items[itemIndex - 1], username, itemIndex <= borrowed.size());
 			}
 		}
 	}

@@ -21,6 +21,8 @@ Book::~Book()
 Book::Book(std::string filename, std::ifstream& file) : Item(filename)
 {
 	file >> dueAt;
+	file.ignore();
+
 	std::getline(file, borrowedBy);
 	std::getline(file, reservedBy);
 
