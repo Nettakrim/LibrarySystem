@@ -35,7 +35,7 @@ Item::State Item::getState() const
 void Item::borrow(std::string member)
 {
 	borrowedBy = member;
-	dueAt = Util::getUnixTime() + (5 * 24 * 60 * 60);
+	dueAt = Util::getUnixTime() + (Library::INSTANCE->borrowDuration * Util::timespan);
 
 	reservedBy = "";
 	state = State::Borrowed;
@@ -52,7 +52,7 @@ void Item::returnItem(std::string member)
 	if (borrowedBy == member) {
 		borrowedBy = "";
 		if (state == State::Reserved) {
-			dueAt = Util::getUnixTime() + 3 * 24 * 60 * 60;
+			dueAt = Util::getUnixTime() + (Library::INSTANCE->reservationDuration * Util::timespan);
 		}
 	}
 	else if (reservedBy == member) {

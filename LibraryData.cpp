@@ -88,6 +88,13 @@ void Library::load()
 		unapprovedActions.push_back(s);
 	}
 	file2.close();
+
+	folder = dir;
+	std::ifstream file3(folder.append("/data/Settings.txt"));
+	file3 >> borrowDuration;
+	file3 >> reservationDuration;
+	file3 >> maxClaims;
+	file3.close();
 }
 
 void Library::save()
@@ -122,6 +129,13 @@ void Library::save()
 		file2 << action[0] << "/" << action[1] << "/" << action[2] << "\n";
 	}
 	file2.close();
+
+	path = dir;
+	std::ofstream file3(path.append("/data/Settings.txt"));
+	file3 << borrowDuration << "\n";
+	file3 << reservationDuration << "\n";
+	file3 << maxClaims << "\n";
+	file3.close();
 }
 
 std::string Library::getUserFilenamePrefix() const

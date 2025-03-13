@@ -16,6 +16,8 @@ namespace Util {
 
 	const inline char* optionPrompt = ": ";
 
+	const inline int timespan = 24 * 60 * 60;
+
 	void awaitEnter();
 
 	int getOption(std::vector<std::string> options, std::string backMessage);

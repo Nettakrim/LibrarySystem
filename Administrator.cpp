@@ -30,7 +30,7 @@ void Administrator::saveData(std::ofstream& file)
 
 bool Administrator::loopUI()
 {
-	int option = Util::getOption({ "Create New Account", "Manage Account"}, "Log Out");
+	int option = Util::getOption({ "Create New Account", "Manage Account", "Set Setting"}, "Log Out");
 
 	if (option == 1) {
 		int type = Util::getOption({ "Librarian", "Admin" });
@@ -68,6 +68,32 @@ bool Administrator::loopUI()
 			bool isThis = username == this->username;
 			if (!user->accountInfoUI(!isThis) && isThis) {
 				return false;
+			}
+		}
+	}
+	else if (option == 3) {
+		int choice = Util::getOption({ "Borrow Duration", "Reservation Duration", "Max Claims" });
+		if (choice > 0) {
+			std::cout << "Current Value: ";
+			if (choice == 1) {
+				std::cout << Library::INSTANCE->borrowDuration;
+			}
+			else if (choice == 2) {
+				std::cout << Library::INSTANCE->reservationDuration;
+			}
+			else if (choice == 3) {
+				std::cout << Library::INSTANCE->maxClaims;
+			}
+			std::cout << "\n";
+			int i = std::atoi(Util::getStringInput("New Value", false).c_str());
+			if (choice == 1) {
+				Library::INSTANCE->borrowDuration = i;
+			}
+			else if (choice == 2) {
+				Library::INSTANCE->reservationDuration = i;
+			}
+			else if (choice == 3) {
+				Library::INSTANCE->maxClaims = i;
 			}
 		}
 	}

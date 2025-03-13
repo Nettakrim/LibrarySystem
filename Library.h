@@ -49,4 +49,10 @@ public:
 	User* getUserByFilename(std::string filename) const;
 
 	Item* getItemByFilename(std::string filename) const;
+
+	int borrowDuration;
+
+	int reservationDuration;
+
+	int maxClaims;
 };

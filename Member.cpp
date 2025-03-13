@@ -118,6 +118,12 @@ bool Member::loopUI()
 				returnPrompt(item, username, isBorrower);
 			}
 			else {
+				if (borrowed.size() + reserved.size() >= Library::INSTANCE->maxClaims) {
+					std::cout << "\nYou are at the limit of " << Library::INSTANCE->maxClaims << " Books Borrowed/Reserved";
+					Util::awaitEnter();
+					return true;
+				}
+
 				Item::State state = item->getState();
 				if (state == Item::State::Available) {
 					int choice = Util::getOption({ "Borrow" });
