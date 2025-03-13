@@ -3,9 +3,9 @@
 #include "Util.h"
 #include "Library.h"
 
-Book::Book(std::string filename) : Item(filename)
+Book::Book(std::string title) : Item(Util::makeFileSafe(Library::INSTANCE->getItemFilenamePrefix() + title) + ".txt")
 {
-
+	this->title = title;
 }
 
 int Book::getType() const

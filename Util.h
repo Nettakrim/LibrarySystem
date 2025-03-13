@@ -22,6 +22,8 @@ namespace Util {
 
 	int getOption(std::vector<std::string> options);
 
+	std::string getStringInput(std::string message, bool allowEmpty);
+
 	void moveBackAndClear(int lines);
 
 	std::string toLower(std::string s);

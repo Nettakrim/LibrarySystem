@@ -38,9 +38,23 @@ int Util::getOption(std::vector<std::string> options)
 	return getOption(options, "Back");
 }
 
+std::string Util::getStringInput(std::string message, bool allowEmpty)
+{
+	std::string input;
+	while (true) {
+		std::cout << message << ": ";
+		std::getline(std::cin, input);
+		if (allowEmpty || input != "") {
+			return input;
+		}
+
+		std::cout << MOVE_TO_LINE_START << CLEAR_LINE_AFTER;
+	}
+}
+
 void Util::moveBackAndClear(int lines)
 {
-	std::cout << Util::ESC << lines << "A" << Util::MOVE_TO_LINE_START << Util::CLEAR_ALL_AFTER;
+	std::cout << ESC << lines << "A" << MOVE_TO_LINE_START << CLEAR_ALL_AFTER;
 }
 
 std::string Util::toLower(std::string s)
