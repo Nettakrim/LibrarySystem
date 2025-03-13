@@ -26,7 +26,10 @@ Book::Book(std::string filename, std::ifstream& file) : Item(filename)
 	std::getline(file, borrowedBy);
 	std::getline(file, reservedBy);
 
-	if (reservedBy != "") {
+	if (borrowedBy == "/" && reservedBy == "/") {
+		state = State::Unavailable;
+	}
+	else if (reservedBy != "") {
 		state = State::Reserved;
 	}
 	else if (borrowedBy != "") {
@@ -40,6 +43,11 @@ Book::Book(std::string filename, std::ifstream& file) : Item(filename)
 
 void Book::saveData(std::ofstream& file)
 {
+	if (state == State::Unavailable) {
+		borrowedBy = "/";
+		reservedBy = "/";
+	}
+
 	file << "book\n";
 	file << dueAt << "\n";
 	file << borrowedBy << "\n";
