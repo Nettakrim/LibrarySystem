@@ -66,6 +66,7 @@ Item* Library::searchItem(int type)
 	std::string field;
 
 	std::vector<std::string> fieldNames = items.front()->getInfoFields();
+	fieldNames.push_back("Show All");
 
 	std::cout << "Search By:\n";
 	while (true) {
@@ -75,11 +76,10 @@ Item* Library::searchItem(int type)
 			return nullptr;
 		}
 		searchField--;
-	
-		std::cout << "Search For: ";
-		std::getline(std::cin, searchText);
-		searchText = Util::toLower(searchText);
 
+		bool all = searchField == fieldNames.size() - 1;
+		searchText = all ? "" : Util::toLower(Util::getStringInput("Search For", true));
+	
 		i = 0;
 		for (Item* item : items) {
 			field = Util::toLower(item->getInfoValue(searchField));
@@ -107,7 +107,7 @@ Item* Library::searchItem(int type)
 		int item = Util::getOption(matchNames);
 
 		if (item == 0) {
-			Util::moveBackAndClear((int)fieldNames.size() + (int)matchNames.size() + 4);
+			Util::moveBackAndClear((int)fieldNames.size() + (int)matchNames.size() + (all ? 3 : 4));
 			continue;
 		}
 		item--;

@@ -35,30 +35,30 @@ bool Administrator::loopUI()
 	if (option == 1) {
 		int type = Util::getOption({ "Librarian", "Admin" });
 		if (type != 0) {
-			std::string username;
-			std::string password;
-			std::cout << "Enter Username: ";
-			std::getline(std::cin, username);
-			std::cout << "Enter Password: ";
-			std::getline(std::cin, password);
-
-			User* user = Library::INSTANCE->getUser(username);
-			if (user != nullptr) {
-				std::cout << "User \"" << username << "\" already exists";
+			std::string username = Util::getStringInput("Enter Username", true);
+			if (username == "") {
+				std::cout << "Cancelled";
 				Util::awaitEnter();
 			}
 			else {
-				User* user = type == 1 ? (User*)new Librarian(username, password) : (User*)new Administrator(username, password);
-				Library::INSTANCE->addUser(user);
-				std::cout << "User Created Successfully";
-				Util::awaitEnter();
+				std::string password = Util::getStringInput("Enter Password", false);
+
+				User* user = Library::INSTANCE->getUser(username);
+				if (user != nullptr) {
+					std::cout << "User \"" << username << "\" already exists";
+					Util::awaitEnter();
+				}
+				else {
+					User* user = type == 1 ? (User*)new Librarian(username, password) : (User*)new Administrator(username, password);
+					Library::INSTANCE->addUser(user);
+					std::cout << "User Created Successfully";
+					Util::awaitEnter();
+				}
 			}
 		}
 	}
 	else if (option == 2) {
-		std::string username;
-		std::cout << "Enter Username: ";
-		std::getline(std::cin, username);
+		std::string username = Util::getStringInput("Enter Username", true);
 		User* user = Library::INSTANCE->getUser(username);
 		if (user == nullptr) {
 			std::cout << "No User " << user << " found";

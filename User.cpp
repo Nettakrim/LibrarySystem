@@ -46,8 +46,7 @@ bool User::accountInfoUI(bool admin)
 				}
 			}
 
-			std::cout << "Enter New Password: ";
-			std::getline(std::cin, this->password);
+			this->password = Util::getStringInput("Enter New Password", false);
 			std::cout << "Updated Password";
 			Util::awaitEnter();
 		}
