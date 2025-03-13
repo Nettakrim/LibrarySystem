@@ -149,3 +149,25 @@ Item* Library::getItemByFilename(std::string filename) const
 	}
 	return nullptr;
 }
+
+void Library::printReport(int type)
+{
+	if (type == 0) {
+		std::cout << "Borrowed Books:";
+		for (Item* item : items) {
+			Item::State state = item->getState();
+			if (state == Item::State::Borrowed || state == Item::State::Reserved) {
+				std::cout << "\n" << item->getListDisplay();
+			}
+		}
+	}
+	else if (type == 1) {
+		std::cout << "Overdue Books:";
+		time_t time = Util::getUnixTime();
+		for (Item* item : items) {
+			if (item->getBorrower() != "" && item->getDueAt() < time) {
+				std::cout << "\n" << item->getListDisplay();
+			}
+		}
+	}
+}

@@ -50,6 +50,8 @@ public:
 
 	Item* getItemByFilename(std::string filename) const;
 
+	void printReport(int type);
+
 	int borrowDuration;
 
 	int reservationDuration;

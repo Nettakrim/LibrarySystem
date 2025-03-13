@@ -49,6 +49,8 @@ public:
 
 	virtual void setInfoValue(int field, std::string value) = 0;
 
+	time_t getDueAt();
+
 private:
 	std::string filename;
 

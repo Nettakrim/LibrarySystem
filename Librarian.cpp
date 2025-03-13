@@ -51,11 +51,17 @@ void manageItem(Item* item) {
 	int action;
 	do {
 		std::cout << Util::LOAD_CURSOR_POS << Util::CLEAR_ALL_AFTER << "\n" << item->getListDisplay() << "\n" << item->getDescription() << "\n";
-		action = Util::getOption({ "Change Info", "Remove from Library"});
+		action = Util::getOption({ "Change Info", "Force-set availability", "Remove from Library"});
 		if (action == 1) {
 			changeInfo(item);
 		}
 		else if (action == 2) {
+			int available = Util::getOption({ "Available", "Unavailable"});
+			if (available > 0) {
+				item->setAvailable(available == 1);
+			}
+		}
+		else if (action == 3) {
 			Library::INSTANCE->removeItem(item);
 			std::cout << "Item Removed";
 			Util::awaitEnter();
@@ -136,7 +142,7 @@ bool Librarian::loopUI()
 		std::cout << "Requests need to be approved\n";
 	}
 
-	int option = Util::getOption({ "Manage Book", "Add Book", "Manage Requests", "Account Info" }, "Log Out");;
+	int option = Util::getOption({ "Manage Book", "Add Book", "Manage Requests", "Generate Report", "Account Info"}, "Log Out");;
 
 	if (option == 1) {
 		Item* item = Library::INSTANCE->searchItem(0);
@@ -160,6 +166,14 @@ bool Librarian::loopUI()
 		do {} while (approvalUI());
 	}
 	else if (option == 4) {
+		int type = Util::getOption({ "Borrowed Books", "Overdue Books" });
+		if (type > 0) {
+			std::cout << Util::CLEAR_ALL;
+			Library::INSTANCE->printReport(type - 1);
+			Util::awaitEnter();
+		}
+	}
+	else if (option == 5) {
 		return accountInfoUI(false);
 	}
 

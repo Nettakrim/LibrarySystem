@@ -73,6 +73,8 @@ std::string Item::getReserver() const
 
 void Item::setAvailable(bool available)
 {
+	borrowedBy = "";
+	reservedBy = "";
 	state = available ? State::Available : State::Unavailable;
 }
 
@@ -130,6 +132,11 @@ void Item::updateBorrowing(time_t currentTime) {
 			reserver->addReservedCache(this);
 		}
 	}
+}
+
+time_t Item::getDueAt()
+{
+	return dueAt;
 }
 
 std::string Item::getFilename() const
