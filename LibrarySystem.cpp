@@ -13,12 +13,13 @@ static void mainLoop() {
             return;
         }
 
-        std::string username;
-        std::string password;
-        std::cout << "Enter Username: ";
-        std::getline(std::cin, username);
-        std::cout << "Enter Password: ";
-        std::getline(std::cin, password);
+        std::string username = Util::getStringInput("Enter Username", true);
+        if (username == "") {
+            std::cout << "Cancelled";
+            Util::awaitEnter();
+            continue;
+        }
+        std::string password = Util::getStringInput("Enter Password", option == 1);
 
         User* user = Library::INSTANCE->getUser(username);
         if (option == 2) {
