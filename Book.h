@@ -6,6 +6,7 @@ private:
 	std::string title;
 	std::string author;
 	std::string description;
+	std::string isbn;
 
 public:
 	Book(std::string filename);
