@@ -168,20 +168,27 @@ bool Member::loopUI()
 				itemNames[i] = borrowedItem->getListDisplay();
 
 				int due = borrowedItem->getDueAt()-currentTime;
-				if (due <= 0) {
-					itemNames[i] += "  ! \33[4mOVERDUE\33[24m !";
-				}
-				else {
-					itemNames[i] += " - Due in " + Util::getTimeText(due);
-				}
+					if (due <= 0) {
+						itemNames[i] += "  ! \33[4mOVERDUE\33[24m !";
+					}
+					else {
+						itemNames[i] += " - Due in " + Util::getTimeText(due);
+					}
 
 				i++;
 			}
 			for (Item* reservedItem : reserved) {
 				items[i] = reservedItem;
 
-				int due = reservedItem->getDueAt() - currentTime;
-				itemNames[i] = reservedItem->getListDisplay() + " - Reserved for " + Util::getTimeText(due);
+				itemNames[i] = reservedItem->getListDisplay();
+				
+				if (reservedItem->getBorrower() != "") {
+					itemNames[i] += " - Reservation Waiting";
+				}
+				else {
+					int due = reservedItem->getDueAt() - currentTime;
+					itemNames[i] += " - Reserved for " + Util::getTimeText(due);
+				}
 
 				i++;
 			}
