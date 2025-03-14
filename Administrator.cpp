@@ -36,7 +36,7 @@ bool Administrator::loopUI()
 		int type = Util::getOption({ "Librarian", "Admin" });
 		if (type != 0) {
 			std::string username = Util::getStringInput("Enter Username", true);
-			if (username == "") {
+			if (username == "" || username == "/") {
 				std::cout << "Cancelled";
 				Util::awaitEnter();
 			}

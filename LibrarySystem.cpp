@@ -14,7 +14,7 @@ static void mainLoop() {
         }
 
         std::string username = Util::getStringInput("Enter Username", true);
-        if (username == "") {
+        if (username == "" || username == "/") {
             std::cout << "Cancelled";
             Util::awaitEnter();
             continue;
